@@ -1,1 +1,68 @@
+CREATE DATABASE QLTV
+GO 
+USE QLTV
+GO
 
+CREATE TABLE THEDOCGIA(
+				MaDocGia char(4),
+				HoTen    varchar(40),
+				NgaySinh smalldatetime,
+				DiaChi   varchar(40),
+				Email    varchar(40),
+				NgayLapThe smalldatetime,
+				MaLoaiDocGia char(4),
+				CONSTRAINT PK_THEDOCGIA PRIMARY KEY (MaDocGia)
+)
+
+CREATE TABLE LOAIDOCGIA(
+				MaLoaiDocGia char(4),
+				TenLoaiDocGia varchar(40),
+				CONSTRAINT PK_LOAIDOCGIA PRIMARY KEY (MaLoaiDocGia)
+)
+
+CREATE TABLE QDTHEDOCGIA(
+				TuoiToiThieu int,
+				TuoiToiDa    int,
+				ThoiGianSuDung smallint,
+)
+
+ALTER TABLE THEDOCGIA ADD CONSTRAINT FK_THEDOCGIA FOREIGN KEY (MaLoaiDocGia) REFERENCES LOAIDOCGIA (MaLoaiDocGia);
+
+CREATE TABLE PHIEUMUONSACH(
+				MaDocGia char(4),
+				MaSach   char(4),
+				NgayMuonSach smalldatetime,
+				NgayTraSach  smalldatetime,
+				CONSTRAINT PK_PHIEUMUONSACH PRIMARY KEY (MaDocGia)
+)
+
+CREATE TABLE THELOAI(
+				MaTheLoai char(4),
+				TenTheLoai varchar(40),
+				CONSTRAINT PK_THELOAI PRIMARY KEY (MaTheLoai)
+)
+
+CREATE TABLE THONGTINSACH(
+				MaSach char(4),
+				TenSach varchar(40),
+				MaTheLoai char(4),
+				TacGia  varchar(40),
+				NhaXuatBan varchar(40),
+				NamXuatBan smallint,
+				NgayNhap smalldatetime,
+				CONSTRAINT PK_THONGTINSACH PRIMARY KEY (MaSach)
+)
+
+CREATE TABLE BAOCAOLUOTMUON(
+				Thang   smallint,
+				TenTheLoai varchar(40),
+				SoLuotMuon smallint,
+				TiLe    smallint,
+				TongLuotMuon smallint,
+				MaTheLoai char(4),
+)
+
+ALTER TABLE THEDOCGIA ADD CONSTRAINT FK_THEDOCGIA_DG FOREIGN KEY (MaDocGia) REFERENCES PHIEUMUONSACH (MaDocGia);
+ALTER TABLE PHIEUMUONSACH ADD CONSTRAINT FK_PHIEUMUONSACH_MS FOREIGN KEY (MaSach) REFERENCES THONGTINSACH (MaSach);
+ALTER TABLE THONGTINSACH ADD CONSTRAINT FK_THONGTINSACH_TL FOREIGN KEY (MaTheLoai) REFERENCES THELOAI (MaTheLoai);
+ALTER TABLE BAOCAOLUOTMUON ADD CONSTRAINT FK_BAOCAOLUOTMUON FOREIGN KEY (MaTheLoai) REFERENCES THELOAI (MaTheLoai);
